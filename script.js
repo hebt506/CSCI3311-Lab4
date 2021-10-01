@@ -58,13 +58,14 @@ async function Charting(){
         .attr("cy", d => yScale(d.LifeExpectancy))
         .attr("r", d => rScale(d.Population))
         .attr("fill", d => colorScale(d.Region))
+        .style("opacity", 0.8)
         .attr("stroke", "black")
         .on("mouseenter", (event, d) => {
 
             let c = d.Country;
-            let i = d.Income;
+            let i = d3.format(",")(d.Income);
             let l = d.LifeExpectancy;
-            let p = d.Population;
+            let p = d3.format(",")(d.Population);
             let r = d.Region;
 
             const pos = d3.pointer(event, window);
@@ -75,10 +76,10 @@ async function Charting(){
             .style('display', 'block')
             .html(
                 "Country: " + c + '</br>' +
-                "Income($): " + i + '</br>' +
-                "Life Expectancy: " + l + '</br>' +
+                "Region: " + r + '</br>' +
                 "Population: " + p + '</br>' +
-                "Region: " + r 
+                "Income: " + i + '</br>' +
+                "Life Expectancy: " + l
             )
         })
         .on("mouseleave", (event, d) => {
