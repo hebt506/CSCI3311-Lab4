@@ -122,14 +122,14 @@ async function Charting(){
 
         legend.append('rect')
         .attr('x', width - 200)
-        .attr('y', (d,i) =>  height - 200 + i*20)
+        .attr('y', (d,i) =>  height - 150 + i*20)
         .attr('width', 10)
         .attr('height', 10)
         .style('fill', colorScale);
 
         legend.append('text')
         .attr('x', width - 180)
-        .attr('y', (d,i) => height - 197 + i*20)
+        .attr('y', (d,i) => height - 147 + i*20)
         .attr('dy','.50em')
         .text(d => d);
 
