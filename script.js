@@ -12,7 +12,7 @@ async function Charting(){
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
-        console.log(data)
+        // console.log(data)
 
         const xScale = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.Income)])
@@ -35,6 +35,21 @@ async function Charting(){
 
         // console.log(rScale(d3.max(data, d => d.Population)))
 
+        let region = [];
+        data.forEach(d => region.push(d.Region));
+
+        // console.log(region)
+
+        let regionCategory = [...new Set(region)];
+
+        // console.log(regionCategory)
+
+        const colorScale = d3.scaleOrdinal()
+        .domain(regionCategory)
+        .range(d3.schemeTableau10);
+
+        // console.log(colorScale.domain())
+
         svg.selectAll("circle")
         .data(data)
         .enter()
@@ -42,8 +57,10 @@ async function Charting(){
         .attr("cx", d => xScale(d.Income))
         .attr("cy", d => yScale(d.LifeExpectancy))
         .attr("r", d => rScale(d.Population))
-        .attr("fill", d3.scaleOrdinal(d3.schemeTableau10))
+        .attr("fill", d => colorScale(d.Region))
+        .attr("stroke", "black")
         .on("mouseenter", (event, d) => {
+
             let c = d.Country;
             let i = d.Income;
             let l = d.LifeExpectancy;
@@ -96,7 +113,25 @@ async function Charting(){
         .text('Life Expectancy')
         .attr('writing-mode', 'vertical-lr');
 
-        // const legend = svg.selectAll('.legend');
+        // console.log(colorScale.domain())
+
+        const legend = svg.selectAll('.legend')
+        .data(colorScale.domain())
+        .enter()
+        .append('g');
+
+        legend.append('rect')
+        .attr('x', width - 200)
+        .attr('y', (d,i) =>  height - 200 + i*20)
+        .attr('width', 10)
+        .attr('height', 10)
+        .style('fill', colorScale);
+
+        legend.append('text')
+        .attr('x', width - 180)
+        .attr('y', (d,i) => height - 197 + i*20)
+        .attr('dy','.50em')
+        .text(d => d);
 
     })
 }
